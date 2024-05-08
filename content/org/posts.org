@@ -1,0 +1,9 @@
+#+title: Posts
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: posts
+
+* Something random
+  :PROPERTIES:
+  :EXPORT_FILE_NAME: random-post
+  :END:
+
