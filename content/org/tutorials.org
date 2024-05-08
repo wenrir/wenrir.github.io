@@ -1,6 +1,6 @@
 #+title: Tutorials
 #+HUGO_BASE_DIR: ../
-#+HUGO_SECTION: ./
+#+HUGO_SECTION: ./tutorials
 
 
 * Some Tutorial

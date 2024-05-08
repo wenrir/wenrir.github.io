@@ -1,6 +1,6 @@
 #+title: Posts
 #+HUGO_BASE_DIR: ../
-#+HUGO_SECTION: ./
+#+HUGO_SECTION: ./posts
 
 * Some post
   :PROPERTIES:

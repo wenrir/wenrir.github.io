@@ -9,3 +9,6 @@ baseURL = 'https://wenrir.github.io/'
 
 [outputs]
   home = ["HTML", "RSS","JSON"]
+
+[markup.goldmark.renderer]
+  unsafe = true
