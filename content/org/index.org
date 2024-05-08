@@ -1,0 +1,10 @@
+#+title: Index
+#+HUGO_BASE_DIR: ../
+
+* Homepage
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: /
+:EXPORT_FILE_NAME: _index
+:END:
+
+Welcome!

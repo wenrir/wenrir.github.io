@@ -1,0 +1,10 @@
+#+title: Posts
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: posts
+
+* Posts
+:PROPERTIES:
+:EXPORT_FILE_NAME: _index
+:END:
+
+Here are some posts.

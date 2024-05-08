@@ -1,0 +1,10 @@
+#+title: Tutorials
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: tutorials
+
+* Tutorials
+:PROPERTIES:
+:EXPORT_FILE_NAME: _index
+:END:
+
+Here are some tutorials.

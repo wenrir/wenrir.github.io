@@ -1,0 +1,14 @@
+languageCode = 'en-us'
+title = 'wenrir'
+enableRobotsTXT = true
+theme = "compose"
+baseURL = 'https://wenrir.github.io/'
+
+[params]
+  subtitle = 'It is the truth which conceals that there is none...'
+
+[outputs]
+  home = ["HTML", "RSS","JSON"]
+
+[markup.goldmark.renderer]
+  unsafe = true

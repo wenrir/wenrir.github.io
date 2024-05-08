@@ -1,0 +1,11 @@
+#+title: Config
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: config
+
+
+* Configs
+:PROPERTIES:
+:EXPORT_FILE_NAME: _index
+:END:
+
+Here are some configs.
