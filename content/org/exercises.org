@@ -1,6 +1,6 @@
 #+title: Exercises
 #+HUGO_BASE_DIR: ../
-#+HUGO_SECTION: exercises
+#+HUGO_SECTION: ./
 
 * Some exercise
   :PROPERTIES:
