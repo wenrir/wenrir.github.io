@@ -2,10 +2,6 @@ languageCode = 'en-us'
 title = 'Wenrir'
 theme = "compose"
 baseURL = 'https://wenrir.github.io/'
-enableCopyright = false
-uniqueHomePage = true
-defaultLightingMode = "dark"
-blogDir = "posts"
 
 [params]
   subtitle = 'It is the truth which conceals that there is none...'
