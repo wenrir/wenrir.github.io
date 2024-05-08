@@ -47,7 +47,6 @@ jobs:
         id: upload-artifact
         uses: actions/upload-artifact@v4
         with:
-          name: "Homepage"
           path: ./content/public
           retention-days: 1
           if-no-files-found: error
