@@ -1,0 +1,7 @@
+languageCode = 'en-us'
+title = 'Wenrir Page'
+theme = "compose"
+baseURL = 'https://wenrir.github.io/'
+
+[params]
+  subtitle = 'It is the truth which conceals that there is none...'
