@@ -1,0 +1,25 @@
+uniqueHomePage = true
+showLineNumbers = true
+enableSearch = true
+enforceDarkMode = true
+
+[search]
+on = false
+global = false
+[search.algolia]
+enable = false
+
+[logo]
+  lightMode = "images/logo.png"
+  darkMode = "images/logo-dark.png"
+
+
+[source]
+  name = "GitHub"
+  iconLight = "images/GitHubMarkLight.svg"
+  iconDark = "images/GitHubMarkDark.svg"
+  url = "https://github.com/wenrir/wenrir.github.io"
+
+[author]  
+  name = "wenrir"
+  url = "https://wenrir.github.io/about"
