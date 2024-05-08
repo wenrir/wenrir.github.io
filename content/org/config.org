@@ -1,0 +1,8 @@
+#+title: Config
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: configs
+
+* Some config
+  :PROPERTIES:
+  :EXPORT_FILE_NAME: some-config
+  :END:

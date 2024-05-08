@@ -1,0 +1,8 @@
+#+title: Exercises
+#+HUGO_BASE_DIR: ../
+#+HUGO_SECTION: exercises
+
+* Some exercise
+  :PROPERTIES:
+  :EXPORT_FILE_NAME: some-exercise
+  :END:

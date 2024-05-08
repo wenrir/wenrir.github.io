@@ -1,0 +1,19 @@
+[[main]]
+  name = "Posts"
+  weight = 5
+  url = "posts/"
+
+[[main]]
+  name = "Configs"
+  weight = 2
+  url = "configs/"
+
+[[main]]
+  name = "Tutorials"
+  weight = 2
+  url = "tutorials/"
+
+[[main]]
+  name = "Exercises"
+  weight = 2
+  url = "exercises/"
