@@ -1,6 +1,6 @@
 #+title: Config
 #+HUGO_BASE_DIR: ../
-#+HUGO_SECTION: configs
+#+HUGO_SECTION: ./
 
 * Some config
   :PROPERTIES:
