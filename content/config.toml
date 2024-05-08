@@ -5,3 +5,5 @@ baseURL = 'https://wenrir.github.io/'
 
 [params]
   subtitle = 'It is the truth which conceals that there is none...'
+[outputs]
+  home = ["HTML", "RSS","JSON"]
