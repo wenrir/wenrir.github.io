@@ -27,7 +27,11 @@ jobs:
         id: pages
         uses: actions/configure-pages@v5
       - name: Export Org file to Markdown
-        run: emacs ./content/org/posts.org --batch -L $(pwd)/tomelr -L $(pwd)/ox-hugo -l $(pwd)/ox-hugo/ox-hugo.el --eval='(org-hugo-export-wim-to-md t)' --kill
+        run: |
+          emacs ./content/org/posts.org --batch -L $(pwd)/tomelr -L $(pwd)/ox-hugo -l $(pwd)/ox-hugo/ox-hugo.el --eval='(org-hugo-export-wim-to-md t)' --kill
+          emacs ./content/org/config.org --batch -L $(pwd)/tomelr -L $(pwd)/ox-hugo -l $(pwd)/ox-hugo/ox-hugo.el --eval='(org-hugo-export-wim-to-md t)' --kill
+          emacs ./content/org/exercises.org --batch -L $(pwd)/tomelr -L $(pwd)/ox-hugo -l $(pwd)/ox-hugo/ox-hugo.el --eval='(org-hugo-export-wim-to-md t)' --kill
+          emacs ./content/org/tutorials.org --batch -L $(pwd)/tomelr -L $(pwd)/ox-hugo -l $(pwd)/ox-hugo/ox-hugo.el --eval='(org-hugo-export-wim-to-md t)' --kill
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
