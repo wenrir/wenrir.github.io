@@ -4,6 +4,7 @@ theme = "compose"
 baseURL = 'https://wenrir.github.io/'
 enableCopyright = false
 uniqueHomePage = true
+defaultLightingMode = "dark"
 
 [params]
   subtitle = 'It is the truth which conceals that there is none...'
