@@ -1,7 +1,8 @@
-uniqueHomePage = true
 showLineNumbers = true
-enableSearch = true
-enforceDarkMode = true
+enableCopyright = false
+uniqueHomePage = true
+defaultLightingMode = "dark"
+blogDir = "posts"
 
 [search]
 on = false
