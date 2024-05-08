@@ -1,5 +1,5 @@
 languageCode = 'en-us'
-title = 'Wenrir Page'
+title = 'Wenrir'
 theme = "compose"
 baseURL = 'https://wenrir.github.io/'
 
