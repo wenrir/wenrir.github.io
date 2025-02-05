@@ -11,6 +11,7 @@ defaultLightingMode = "dark"
 [search]
 on = true
 global = false
+
 [search.algolia]
 enable = false
 
@@ -27,3 +28,10 @@ enable = false
 [author]  
   name = "wenrir"
   url = "https://wenrir.github.io/about"
+
+
+[taxonomies]
+  author   = "author"
+  category = "categories"
+  search   = "search"
+  tag      = "tags"

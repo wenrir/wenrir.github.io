@@ -1,14 +1,23 @@
 languageCode = 'en-us'
 title = 'wenrir'
 enableRobotsTXT = true
-theme = "compose"
+theme = ["blowfish", "hugo-search-fuse-js"]
 baseURL = 'https://wenrir.github.io/'
+
+
+PygmentsCodeFences = true
+PygmentsStyle = "native"
+
+disableSitemap = false
+disable404     = false
 
 [params]
   subtitle = 'It is the truth which conceals that there is none...'
 
 [outputs]
-  home = ["HTML", "RSS","JSON"]
+  home = ["HTML", "RSS","JSON", "TOML"]
 
 [markup.goldmark.renderer]
   unsafe = true
+
+
