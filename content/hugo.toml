@@ -13,7 +13,6 @@ PygmentsStyle = "native"
 disableSitemap = false
 disable404     = false
 
-enableRobotsTXT= true
 buildDrafts= false
 buildFuture= false
 buildExpired= false
