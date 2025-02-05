@@ -7,4 +7,352 @@
 :EXPORT_FILE_NAME: _index
 :END:
 
-Here are some exercises.
+
+** IN_PROG FastAI
+:PROPERTIES:
+:EXPORT_HUGO_SECTION: fastai
+:END:
+
+*** Setup
+#+name: Install pyenv, let's use the automatic installer
+#+begin_src sh :results silent
+curl https://pyenv.run | bash
+#+end_src
+
+**** Update zshrc
+Tangle does not extend ... let's be lazy and echo into `.zshrc`
+#+name: Eval pyenv
+#+begin_src sh
+echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc
+echo '[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc
+echo 'eval "$(pyenv init -)"' >> ~/.zshrc
+echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.zshrc
+#+end_src
+
+**** Setup new python env
+#+name: Install python 3.11.7
+#+begin_src sh
+pyenv install 3.11.7
+#+end_src
+
+#+name: Activate and install initial dependencies
+#+begin_src sh :results output silent
+pyenv local 3.11.7
+pip install notebook
+#+end_src
+
+**** Setup ipykernel
+
+#+begin_src sh session local :noeval
+pip install ipykernel
+#+end_src
+
+#+begin_src sh
+python -m ipykernel install --user --display-name "Python (pyenv)"
+#+end_src
+
+#+RESULTS:
+: Installed kernelspec python3 in ~/local/share/jupyter/kernels/python3
+
+**** Jupyter
+#+begin_src sh session local :noeval
+jupyter kernel --kernel=python
+#+end_src
+
+#+name: Reload languages
+#+begin_src emacs-lisp
+(org-babel-do-load-languages)
+#+end_src
+*** Exercise 1 - Is it a bird?
+:PROPERTIES:
+:EXPORT_FILE_NAME: fastai-ex1
+:header-args:jupyter-python: :session ~/.local/share/jupyter/runtime/kernel-90c6b559-be81-4a75-ab51-ab372d108e57.json :pandoc t :kernel python :exports both +n
+:END:
+**** References
++ [[https://www.kaggle.com/code/jhoward/is-it-a-bird-creating-a-model-from-your-own-data][Kaggle]]
++ [[https://course.fast.ai/Lessons/lesson1.html][FastAI Lesson 1]]
+**** Is it a bird?
+***** Setup
+#+name: Install dependencies
+#+begin_src bash :exports none :results none
+pip install duckduckgo-search==5.3.1 fastcore==1.3.14
+#+end_src
+
+#+name: fastdownload
+#+begin_src bash :exports none :results none
+pip install fastdownload==0.0.7
+#+end_src
+
+#+name: fastai
+#+begin_src bash :exports none :results none
+pip install fastai==2.7.15
+#+end_src
+
+Confirm that dependencies are installed.
+#+name: Grep for ddg package
+#+begin_src bash
+pip list | grep duckduckgo_search
+#+end_src
+
+#+RESULTS: Grep for ddg package
+: duckduckgo_search         5.3.1
+
+#+name: Grep for fastcore package
+#+begin_src bash
+pip list | grep fastcore
+#+end_src
+
+#+RESULTS: Grep for fastcore package
+: fastcore                  1.5.35
+
+#+name: Grep for fastdownload package
+#+begin_src bash
+pip list | grep fastdownload
+#+end_src
+
+#+RESULTS: Grep for fastdownload package
+: fastdownload              0.0.7
+
+#+name: Grep for fastai package
+#+begin_src bash
+pip list | grep fastai
+#+end_src
+
+#+begin_src emacs-lisp
+(funcall 'jupyter-refresh-kernelspecs)
+#+end_src
+
+#+RESULTS:
+: Refreshing kernelspecs...done
+
+***** Logic
+****** Preparation
+#+name: import packages
+#+begin_src jupyter-python :results silent
+from duckduckgo_search import DDGS
+from fastcore.all import L
+from fastdownload import download_url
+from fastdownload import FastDownload
+#+end_src
+
+#+name: searchimages
+#+begin_src jupyter-python :var term="" :var max_images=30 :results output :exports none
+ddgs = DDGS()
+urls = term and L(ddgs.images(keywords=f"{term}", max_results=max_images)).itemgot('image')
+#+end_src
+
+#+RESULTS: searchimages
+
+#+name: bird-url
+#+begin_src jupyter-python :noweb yes :results value :results silent
+<<searchimages(term="bird photos", max_images=1)>>
+#+end_src
+
+#+begin_src jupyter-python :noweb yes
+print(urls)
+#+end_src
+
+#+RESULTS:
+: ['https://images.pexels.com/photos/326900/pexels-photo-326900.jpeg?cs=srgb&dl=wood-flight-bird-326900.jpg&fm=jpg']
+
+#+name: tmp-image-dest
+#+begin_src text
+~/git/wenrir.github.io/misc/fast-ai/ex1/birds
+#+end_src
+
+#+name: Download image and show image
+#+begin_src jupyter-python :noweb yes
+d = FastDownload(base="<<tmp-image-dest>>")
+try:
+        d.get(urls[0])
+except Exception as e:
+        print(f"Unable to download image  {e}")
+#+end_src
+
+
+For some reason it's saved as jpeg and not jpg.
+#+begin_src sh :noweb yes
+ls <<tmp-image-dest>>
+#+end_src
+
+#+RESULTS:
+| archive    |
+| config.ini |
+| data       |
+
+If we curl the same URL, will it save as jpg or jpeg ?
+
+#+begin_src sh :results silent :noweb yes
+cd  <<tmp-image-dest>>
+curl -O "https://images.pexels.com/photos/1661179/pexels-photo-1661179.jpeg?cs=srgb&dl=green-bird-1661179.jpg&fm=jpg"
+#+end_src
+#+begin_src sh :noweb yes
+ls <<tmp-image-dest>>
+#+end_src
+
+#+RESULTS:
+| archive                   |
+| config.ini                |
+| data                      |
+| pexels-photo-1661179.jpeg |
+
+
+Okay here it will also be stored as `.jpeg`, let's move the file (and clean up the repo.)
+#+begin_src sh :results silent :noweb yes
+rm -rf <<tmp-image-dest>>/pexels-photo-1661179.jpeg
+#+end_src
+
+#+name: Move jpeg to jpg
+#+begin_src jupyter-python :noweb yes :results file link
+from shutil import move
+move("./misc/fast-ai/ex1/birds/archive/pexels-photo-326900.jpeg",
+"./misc/fast-ai/ex1/birds/archive/pexels-photo-326900.jpg")
+"./misc/fast-ai/ex1/birds/archive/pexels-photo-326900.jpg"
+#+end_src
+
+#+RESULTS: Move jpeg to jpg
+
+
+#+name: Import fast vision dependencies
+#+begin_src jupyter-python :results silent
+from fastai.vision.all import *
+#+end_src
+
+#+name: Open image
+#+begin_src jupyter-python :noweb yes
+im = Image.open("./misc/fast-ai/ex1/birds/archive/pexels-photo-326900.jpg")
+im.to_thumb(256,256)
+#+end_src
+
+#+RESULTS: Open image
+[[./.ob-jupyter/4ec0eea1a7863f21fcaf9cb4101f745fc0128133.jpg]]
+
+
+
+#+name: Download foreset
+#+name: foreset
+#+begin_src jupyter-python :noweb yes :results value :results silent
+<<searchimages(term="skog", max_images=1)>>
+d = FastDownload(base="misc/fast-ai/ex1/forest")
+try:
+        d.get(urls[0])
+except Exception as e:
+        print(f"Unable to download image  {e}")
+#+end_src
+
+#+name: forest-image
+#+begin_src sh :results output replace :noweb yes
+find <<tmp-image-dest>>/../forest/archive -name *.jpg | tr -d "\n"
+#+end_src
+
+
+
+#+name: Display image
+#+begin_src jupyter-python :var image=forest-image
+Image.open(image).to_thumb(256,256)
+#+end_src
+
+#+RESULTS: Display image
+[[./.ob-jupyter/42cefd24f4e59ed443b3aa4635ea825f4acd11a7.jpg]]
+
+
+Let's prepare some training data.
+#+name: imports
+#+begin_src jupyter-python :results silent
+from pathlib import Path
+from time import sleep
+#+end_src
+
+#+name: Training data setup.
+#+begin_src jupyter-python :results silent :noweb yes
+
+image_urls = lambda term, max_images: term and L(ddgs.images(keywords=f"{term}", max_results=max_images)).itemgot('image')
+
+searches = "forest", "bird"
+path = Path('<<tmp-image-dest>>/../bird_or_not')
+
+#+end_src
+#+Get training data.
+#+begin_src jupyter-python :results silent :noweb yes
+ddgs = DDGS()
+
+for search in searches:
+    store_loc = (path/search)
+    store_loc.mkdir(exist_ok=True, parents=True)
+    download_dir = FastDownload(base=store_loc.absolute().as_posix())
+    urls = image_urls(f"{search} photo", 30)
+    urls.extend(image_urls(f"{term} sun photo", 30))
+    urls.extend(image_urls(f"{term} shade photo", 30))
+    for url in urls:
+        try:
+            download_dir.get(url)
+        except:
+            continue # No need to handle exception, just try to download next url.
+#+end_src
+
+#+name: Did we manage to download the images?
+#+begin_src sh :noweb yes
+ls <<tmp-image-dest>>/../bird_or_not
+ls <<tmp-image-dest>>/../bird_or_not/bird/archive | head -n 1
+ls <<tmp-image-dest>>/../bird_or_not/forest/archive | head -n 1
+ls -1 <<tmp-image-dest>>/../bird_or_not/bird/archive | wc -l
+ls -1 <<tmp-image-dest>>/../bird_or_not/forest/archive | wc -l
+#+end_src
+
+#+RESULTS: Did we manage to download the images?
+| bird                                |
+| forest                              |
+| 143-1438149_3840x2400-wallpaper.jpg |
+| 0311_birds2.jpg                     |
+| 80                                  |
+| 78                                  |
+
+Alright, seems like we've downloaded some images. Let's train our model.
+****** Model training
+#+name: Verify images
+#+begin_src jupyter-python :results output
+failed = verify_images(get_image_files(path))
+failed.map(Path.unlink)
+len(failed)
+#+end_src
+#+RESULTS: Verify images
+
+#+begin_quote
+To train a model, we'll need DataLoaders, which is an object that contains a training set (the images used to create a model) and a validation set (the images used to check the accuracy of a model -- not used during training). In fastai we can create that easily using a DataBlock, and view sample images from it:
+#+end_quote
+
+I assume here that `DataLoaders` are objects that facilitates the setup process (pre-processing) of the model we'd like to train.
+
+Looking at the documentation
+#+begin_src python
+
+DataLoader(dataset, batch_size=1, shuffle=False, sampler=None,
+           batch_sampler=None, num_workers=0, collate_fn=None,
+           pin_memory=False, drop_last=False, timeout=0,
+           worker_init_fn=None, prefetch_factor=2,
+           persistent_workers=False)
+#+end_src
+
+#+RESULTS:
+
+To state the obvious `DataLoader` supports the user to "load the data".
+
+On with the tutorial
+#+begin_src jupyter-python :results output
+dls = DataBlock(
+    blocks=(ImageBlock, CategoryBlock),
+    get_items=get_image_files,
+    splitter=RandomSplitter(valid_pct=0.2, seed=42),
+    get_y=parent_label,
+    item_tfms=[Resize(192, method='squish')]
+).dataloaders(path, bs=32)
+dls.show_batch(max_n=6)
+#+end_src
+
+#+RESULTS:
+[[./.ob-jupyter/18652fc8067ddee5d2f919aa48e94f5cb9aaa1da.png]]
+
+
+Hmm ... seems like the download functionality of fastai has changed sense the tutorial.
+Lets move the archive to `forest` and `bird` respectively.
+
