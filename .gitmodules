@@ -1,7 +1,7 @@
 [submodule "content/themes/compose"]
 	path = content/themes/compose
 	url = https://github.com/onweru/compose/
-[submodule "content/themes/blowfish"]
-	path = content/themes/blowfish
-	url = https://github.com/nunocoracao/blowfish.git
+[submodule "content/themes/risotto"]
+	path = content/themes/risotto
+	url = git@github.com:joeroe/risotto.git
 	branch = main
