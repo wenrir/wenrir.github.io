@@ -66,7 +66,7 @@ jupyter kernel --kernel=python
 *** Exercise 1 - Is it a bird?
 :PROPERTIES:
 :EXPORT_FILE_NAME: fastai-ex1
-:header-args:jupyter-python: :session ~/.local/share/jupyter/runtime/kernel-5c80e9af-8137-49ed-ace7-92e7b0b94e24.json :pandoc t :kernel python :exports both +n
+:header-args:jupyter-python: :session ~/.local/share/jupyter/runtime/kernel-90c6b559-be81-4a75-ab51-ab372d108e57.json :pandoc t :kernel python :exports both +n
 :END:
 **** References
 + [[https://www.kaggle.com/code/jhoward/is-it-a-bird-creating-a-model-from-your-own-data][Kaggle]]
@@ -153,75 +153,65 @@ print(urls)
 #+end_src
 
 #+RESULTS:
-: ['https://images.pexels.com/photos/1661179/pexels-photo-1661179.jpeg?cs=srgb&dl=green-bird-1661179.jpg&fm=jpg']
+: ['https://images.pexels.com/photos/326900/pexels-photo-326900.jpeg?cs=srgb&dl=wood-flight-bird-326900.jpg&fm=jpg']
 
 #+name: tmp-image-dest
 #+begin_src text
-"~/tmp/birds"
+~/git/wenrir.github.io/misc/fast-ai/ex1/birds
 #+end_src
 
 #+name: Download image and show image
 #+begin_src jupyter-python :noweb yes
-d = FastDownload(base=<<tmp-image-dest>>)
+d = FastDownload(base="<<tmp-image-dest>>")
 try:
         d.get(urls[0])
 except Exception as e:
         print(f"Unable to download image  {e}")
 #+end_src
 
-#+RESULTS: Download image and show image
-: █
-
- |----------------------------------------| 0.00% [0/807464 00:00<?]
-
- |----------------------------------------| 1.01% [8192/807464 00:00<00:00]
-
- |███████████████████████-----------------| 58.84% [475136/807464 00:00<00:00]
-
- |████████████████████████████████████████| 100.44% [811008/807464 00:00<00:00]
-Unable to download image  Unknown archive format '~/tmp/birds/archive/pexels-photo-1661179.jpeg'
 
 For some reason it's saved as jpeg and not jpg.
-#+begin_src sh
-ls ~/tmp/birds/archive/
+#+begin_src sh :noweb yes
+ls <<tmp-image-dest>>
 #+end_src
 
 #+RESULTS:
-| pexels-photo-1661179.jpeg |
+| archive    |
+| config.ini |
+| data       |
 
 If we curl the same URL, will it save as jpg or jpeg ?
 
 #+begin_src sh :results silent :noweb yes
+cd  <<tmp-image-dest>>
 curl -O "https://images.pexels.com/photos/1661179/pexels-photo-1661179.jpeg?cs=srgb&dl=green-bird-1661179.jpg&fm=jpg"
 #+end_src
-#+begin_src sh
-ls
+#+begin_src sh :noweb yes
+ls <<tmp-image-dest>>
 #+end_src
 
 #+RESULTS:
-| config.org                |
-| exercises.org             |
-| index.org                 |
+| archive                   |
+| config.ini                |
+| data                      |
 | pexels-photo-1661179.jpeg |
-| posts.org                 |
-| tutorials.org             |
+
 
 Okay here it will also be stored as `.jpeg`, let's move the file (and clean up the repo.)
-#+begin_src sh :results silent
-rm -rf pexels-photo-1661179.jpeg
+#+begin_src sh :results silent :noweb yes
+rm -rf <<tmp-image-dest>>/pexels-photo-1661179.jpeg
 #+end_src
 
 #+name: Move jpeg to jpg
 #+begin_src jupyter-python :noweb yes :results file link
 from shutil import move
-move(<<tmp-image-dest>> + "/archive/pexels-photo-1661179.jpeg",
-<<tmp-image-dest>> + "/archive/pexels-photo-1661179.jpg")
-<<tmp-image-dest>> + "/archive/pexels-photo-1661179.jpg"
+move("./misc/fast-ai/ex1/birds/archive/pexels-photo-326900.jpeg",
+"./misc/fast-ai/ex1/birds/archive/pexels-photo-326900.jpg")
+"./misc/fast-ai/ex1/birds/archive/pexels-photo-326900.jpg"
 #+end_src
 
-#+name: Bird?
 #+RESULTS: Move jpeg to jpg
-[[~/tmp/birds/archive/pexels-photo-1661179.jpg]]
+
 
 #+name: Import fast vision dependencies
 #+begin_src jupyter-python :results silent
@@ -230,19 +220,20 @@ from fastai.vision.all import *
 
 #+name: Open image
 #+begin_src jupyter-python :noweb yes
-im = Image.open(<<tmp-image-dest>> + "/archive/pexels-photo-1661179.jpg")
+im = Image.open("./misc/fast-ai/ex1/birds/archive/pexels-photo-326900.jpg")
 im.to_thumb(256,256)
 #+end_src
 
 #+RESULTS: Open image
-[[./.ob-jupyter/75d095c6c2b1aa6de1d2e4abcaa1ee92c60ed1bb.jpg]]
+[[./.ob-jupyter/4ec0eea1a7863f21fcaf9cb4101f745fc0128133.jpg]]
+
 
 
 #+name: Download foreset
 #+name: foreset
 #+begin_src jupyter-python :noweb yes :results value :results silent
-<<searchimages(term="forest photos", max_images=1)>>
-d = FastDownload(base="~/tmp/forest")
+<<searchimages(term="skog", max_images=1)>>
+d = FastDownload(base="misc/fast-ai/ex1/forest")
 try:
         d.get(urls[0])
 except Exception as e:
@@ -250,21 +241,19 @@ except Exception as e:
 #+end_src
 
 #+name: forest-image
-#+begin_src sh :results output replace
-find ~/tmp/forest/archive -name *.jpg | tr -d "\n"
+#+begin_src sh :results output replace :noweb yes
+find <<tmp-image-dest>>/../forest/archive -name *.jpg | tr -d "\n"
 #+end_src
 
-#+RESULTS: forest-image
-: ~/tmp/forest/archive/Pine-Forest-Wallpaper-High-Quality-HD.jpg
+
 
 #+name: Display image
 #+begin_src jupyter-python :var image=forest-image
 Image.open(image).to_thumb(256,256)
 #+end_src
 
-#+RESULTS:
+#+RESULTS: Display image
 [[./.ob-jupyter/42cefd24f4e59ed443b3aa4635ea825f4acd11a7.jpg]]
-
 
 
 Let's prepare some training data.
@@ -280,7 +269,7 @@ from time import sleep
 image_urls = lambda term, max_images: term and L(ddgs.images(keywords=f"{term}", max_results=max_images)).itemgot('image')
 
 searches = "forest", "bird"
-path = Path('~/tmp/bird_or_not')
+path = Path('<<tmp-image-dest>>/../bird_or_not')
 
 #+end_src
 #+Get training data.
@@ -302,12 +291,12 @@ for search in searches:
 #+end_src
 
 #+name: Did we manage to download the images?
-#+begin_src sh
-ls ~/tmp/bird_or_not
-ls ~/tmp/bird_or_not/bird/archive | head -n 1
-ls ~/tmp/bird_or_not/forest/archive | head -n 1
-ls -1 ~/tmp/bird_or_not/bird/archive | wc -l
-ls -1 ~/tmp/bird_or_not/forest/archive | wc -l
+#+begin_src sh :noweb yes
+ls <<tmp-image-dest>>/../bird_or_not
+ls <<tmp-image-dest>>/../bird_or_not/bird/archive | head -n 1
+ls <<tmp-image-dest>>/../bird_or_not/forest/archive | head -n 1
+ls -1 <<tmp-image-dest>>/../bird_or_not/bird/archive | wc -l
+ls -1 <<tmp-image-dest>>/../bird_or_not/forest/archive | wc -l
 #+end_src
 
 #+RESULTS: Did we manage to download the images?
@@ -336,12 +325,15 @@ I assume here that `DataLoaders` are objects that facilitates the setup process 
 
 Looking at the documentation
 #+begin_src python
+
 DataLoader(dataset, batch_size=1, shuffle=False, sampler=None,
            batch_sampler=None, num_workers=0, collate_fn=None,
            pin_memory=False, drop_last=False, timeout=0,
-           worker_init_fn=None, *, prefetch_factor=2,
+           worker_init_fn=None, prefetch_factor=2,
            persistent_workers=False)
 #+end_src
+
+#+RESULTS:
 
 To state the obvious `DataLoader` supports the user to "load the data".
 
@@ -364,6 +356,3 @@ dls.show_batch(max_n=6)
 Hmm ... seems like the download functionality of fastai has changed sense the tutorial.
 Lets move the archive to `forest` and `bird` respectively.
 
-#+begin_src sh
-mv ~/tmp/bird_or_not/
-#+end_src
