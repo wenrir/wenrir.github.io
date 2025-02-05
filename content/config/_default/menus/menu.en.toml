@@ -9,9 +9,9 @@
   url = "config/"
 
 [[main]]
-  name = "Tutorials"
+  name = "Notes"
   weight = 2
-  url = "tutorials/"
+  url = "notes/"
 
 [[main]]
   name = "Exercises"

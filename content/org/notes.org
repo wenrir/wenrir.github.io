@@ -1,8 +1,8 @@
-#+title: Tutorials
+#+title: Notes
 #+HUGO_BASE_DIR: ../
-#+HUGO_SECTION: tutorials
+#+HUGO_SECTION: notes
 
-* Tutorials
+* Notes
 :PROPERTIES:
 :EXPORT_FILE_NAME: _index
 :END:
