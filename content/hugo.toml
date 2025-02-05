@@ -15,7 +15,7 @@ disable404     = false
   subtitle = 'It is the truth which conceals that there is none...'
 
 [outputs]
-  home = ["HTML", "RSS","JSON", "TOML"]
+  home = ["HTML", "RSS","JSON"]
 
 [markup.goldmark.renderer]
   unsafe = true
