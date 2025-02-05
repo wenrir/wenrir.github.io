@@ -7,9 +7,8 @@
 :EXPORT_FILE_NAME: _index
 :END:
 
-Here are some exercises.
 
-** FastAI
+** IN_PROG FastAI
 :PROPERTIES:
 :EXPORT_HUGO_SECTION: fastai
 :END:
@@ -171,7 +170,16 @@ except Exception as e:
 #+end_src
 
 #+RESULTS: Download image and show image
-: █ |----------------------------------------| 0.00% [0/807464 00:00<?] |----------------------------------------| 1.01% [8192/807464 00:00<00:00] |███████████████████████-----------------| 58.84% [475136/807464 00:00<00:00] |████████████████████████████████████████| 100.44% [811008/807464 00:00<00:00]Unable to download image  Unknown archive format '~/tmp/birds/archive/pexels-photo-1661179.jpeg'
+: █
+
+ |----------------------------------------| 0.00% [0/807464 00:00<?]
+
+ |----------------------------------------| 1.01% [8192/807464 00:00<00:00]
+
+ |███████████████████████-----------------| 58.84% [475136/807464 00:00<00:00]
+
+ |████████████████████████████████████████| 100.44% [811008/807464 00:00<00:00]
+Unable to download image  Unknown archive format '~/tmp/birds/archive/pexels-photo-1661179.jpeg'
 
 For some reason it's saved as jpeg and not jpg.
 #+begin_src sh
