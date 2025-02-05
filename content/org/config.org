@@ -262,7 +262,7 @@ We can now create any org file inside of the `init` directory, and the ros scrip
 #+title: Emacs Configs
 #+options: prop:t
 #+startup: fold
-* General 
+\* General 
 :PROPERTIES:
 :header-args: :comments no :mkdirp yes :tangle /home/user/nixos/modules/home-manager/emacs/init/init.el :noweb tangle
 :END:
