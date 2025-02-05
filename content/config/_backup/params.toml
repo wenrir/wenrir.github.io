@@ -4,7 +4,7 @@ uniqueHomePage = false
 
 enableCopyright = false
 
-docSections = ["config", "exercises", "posts", "notes"]
+#docSections = ["config", "exercises", "posts", "notes"]
 enableDarkMode = true
 defaultLightingMode = "dark"
 
