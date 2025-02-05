@@ -1,14 +1,58 @@
 languageCode = 'en-us'
 title = 'wenrir'
 enableRobotsTXT = true
-theme = "compose"
+theme = ["risotto"]
 baseURL = 'https://wenrir.github.io/'
+paginate = 3
+enableInlineShortcodes = true
+sectionPagesMenu = "main"
+
 
 [params]
-  subtitle = 'It is the truth which conceals that there is none...'
+  noindex = false
+  #subtitle = 'It is the truth which conceals that there is none...'
 
-[outputs]
-  home = ["HTML", "RSS","JSON"]
+[params.theme]
+  palette = "gruvbox-dark"
+
+[params.about]
+  title = "W"
+  description = "Mainly collection of notes that others might but most likely wont find useful."
+
+[[params.socialLinks]]
+icon = "fa-brands fa-github"
+title = "GitHub"
+url = "https://github.com/wenrir"
+
+[taxonomies]
+category = "categories"
+tag = "tags"
+series = "series"
 
 [markup.goldmark.renderer]
-  unsafe = true
+unsafe = true
+
+
+[markup]
+
+  # Table of contents
+  # Add toc = true to content front matter to enable
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel   = 3
+    ordered    = true
+
+[privacy]
+
+  [privacy.vimeo]
+    disabled = true
+
+  [privacy.twitter]
+    disabled = true
+
+  [privacy.instagram]
+    disabled = true
+
+  [privacy.youtube]
+    disabled = true
+

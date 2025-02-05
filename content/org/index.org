@@ -7,4 +7,4 @@
 :EXPORT_FILE_NAME: _index
 :END:
 
-Welcome!
+Mainly collection of notes that other might but most likely wont find useful.
