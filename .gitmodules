@@ -1,3 +1,6 @@
 [submodule "content/themes/hugo-bearcub"]
 	path = content/themes/hugo-bearcub
 	url = https://github.com/clente/hugo-bearcub
+[submodule "content/themes/nightfall"]
+	path = content/themes/nightfall
+	url = https://github.com/LordMathis/hugo-theme-nightfall

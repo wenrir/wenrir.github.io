@@ -1,26 +1,16 @@
-title = 'wenrir'
+user = 'wenrir'
+hostname = "wenrir.github.io"
 
-description = "Mainly collection of notes that other might but most likely wont find useful."
-favicon = "static/images/logo.svg"
-dateFormat = "2006-01-02"
-generateSocialCard = true
-[params.social]
-  github = "github.com/wenrir" # Twitter handle (without '@')
+[params.author]
+  name = "wenrir" 
 
-showLineNumbers = true
-uniqueHomePage = false
-enableCopyright = false
+readingTime = true  # Show reading time on post page
+published = true  # Show published data on post page
 
-mainSections = ["posts", "notes"]
-[doks]
-  sectionNav = ["config", "posts", "notes", "exercises"]
-  breadcrumbTrail = true 
-  colorMode = "dark"
-  colorModeToggler = false
-  navbarSticky = true
-  showDate = true 
-  searchLimit = 10 # 0 (no limit, default) or natural number
-  repoHost = "GitHub" # GitHub (default), Gitea, GitLab, Bitbucket, or BitbucketServer
-  docsRepo = "https://github.com/wenrir/wenrir.github.io"
-  docsRepoBranch = "main" # main (default), master, or <branch name>
+[[params.social]]
+key = 0
+name = "github"
+url = "https://github.com/wenrir"
+target = "_blank"
+aria = "GitHub Profile"
 
