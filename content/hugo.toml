@@ -8,7 +8,7 @@ disableHugoGeneratorInject = true
 enableEmoji = true
 enableGitInfo = false
 enableRobotsTXT = true
-paginate = 10
+paginate = 3
 rssLimit = 10
 summarylength = 20 
 defaultContentLanguage = "en"
@@ -17,8 +17,7 @@ pygmentsCodeFences = true
 pygmentsCodefencesGuessSyntax = true
 pygmentsUseClasses = true
 
-
-copyright = ""
+copyright = "© W"
 
 [build.buildStats]
   enable = true
@@ -32,3 +31,42 @@ copyright = ""
 
 [author]
   name = "wenrir"
+
+[params]
+mode="dark" # color-mode → light,dark,toggle or auto
+useCDN=false # don't use CDNs for fonts and icons, instead serve them locally.
+subtitle = "Mainly collection of notes that other might but most likely wont find useful."
+mathjax = true # enable MathJax support
+katex = true # enable KaTeX support
+[[params.social]]
+  name = "github"
+  url  = "https://github.com/wenrir/"
+
+[[menu.main]]
+  name = "Posts"
+  identifier = "posts"
+  weight = 5
+  url = "/posts"
+
+[[menu.main]]
+  name = "Config"
+  identifier = "config"
+  weight = 2
+  url = "/config"
+
+[[menu.main]]
+  name = "Notes"
+  identifier = "notes"
+  weight = 2
+  url = "/notes"
+
+[[menu.main]]
+  name = "Exercises"
+  identifier = "exercises"
+  weight = 2
+  url = "/exercises"
+
+[[menu.main]]
+name = "Home"
+url = "/"
+weight = 1
