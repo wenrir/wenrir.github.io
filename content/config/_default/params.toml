@@ -1,38 +1,20 @@
-# Compose
+title = 'wenrir'
+
 showLineNumbers = true
 uniqueHomePage = false
-
+#
 enableCopyright = false
 
-docSections = ["config", "exercises", "posts", "notes"]
-enableDarkMode = true
-defaultLightingMode = "dark"
+mainSections = ["posts", "notes"]
+[doks]
+  sectionNav = ["config", "posts", "notes", "exercises"]
+  breadcrumbTrail = true 
+  colorMode = "dark"
+  colorModeToggler = false
+  navbarSticky = true
+  showDate = true 
+  searchLimit = 10 # 0 (no limit, default) or natural number
+  repoHost = "GitHub" # GitHub (default), Gitea, GitLab, Bitbucket, or BitbucketServer
+  docsRepo = "https://github.com/wenrir/wenrir.github.io"
+  docsRepoBranch = "main" # main (default), master, or <branch name>
 
-
-[search]
-on = true
-global = false
-
-[search.algolia]
-enable = false
-
-[logo]
-  lightMode = "images/logo.svg"
-  darkMode = "images/logo-dark.svg"
-
-[source]
-  name = "GitHub"
-  iconLight = "images/github-light.svg"
-  iconDark = "images/github-dark.svg"
-  url = "https://github.com/wenrir/wenrir.github.io"
-
-[author]  
-  name = "wenrir"
-  url = "https://wenrir.github.io/about"
-
-
-[taxonomies]
-  author   = "author"
-  category = "categories"
-  search   = "search"
-  tag      = "tags"
