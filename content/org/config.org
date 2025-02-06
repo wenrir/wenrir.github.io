@@ -55,8 +55,16 @@ nix-shell -p tree --command "tree ~/nixos"
 | │               | │            | ├──                        | emacs              |              |               |
 | │               | │            | │                          | ├──                | emacs.nix    |               |
 | │               | │            | │                          | ├──                | init         |               |
+| │               | │            | │                          | │                  | ├──          | general.el    |
 | │               | │            | │                          | │                  | ├──          | general.org   |
+| │               | │            | │                          | │                  | ├──          | init.el       |
 | │               | │            | │                          | │                  | ├──          | init.org      |
+| │               | │            | │                          | │                  | ├──          | init.org~     |
+| │               | │            | │                          | │                  | ├──          | keybinds.el   |
+| │               | │            | │                          | │                  | ├──          | org.el        |
+| │               | │            | │                          | │                  | ├──          | packages.el   |
+| │               | │            | │                          | │                  | ├──          | sly.el        |
+| │               | │            | │                          | │                  | └──          | visual.el     |
 | │               | │            | │                          | ├──                | Makefile     |               |
 | │               | │            | │                          | └──                | util         |               |
 | │               | │            | │                          | └──                | tangle.ros   |               |
@@ -116,6 +124,7 @@ nix-shell -p tree --command "tree ~/nixos"
 
 
 
+
 I'll not go in to much detail about each file and directory so here's a short summary;
 
 + nixos/flake.nix : root flake.
@@ -153,6 +162,27 @@ zsh -c "source ~/.zshrc && which config"
 
 #+RESULTS:
 : config: aliased to $HOME/.nix-profile/bin/git --git-dir=$HOME/config --work-tree=$HOME/nixos
+
+** Git config
+
+Let's force using ssh in repos, works even if clones with http.
+
+#+begin_src nix
+  programs.git = {
+    enable = true;
+    userName = "wenrir";
+    userEmail = "email"; 
+    aliases = {
+      co = "checkout";
+      cfg = "--git-dir=/home/${user}/cstore --work-tree=/home/${user}/nixos";
+      lg = "log --oneline --all --decorate --color --abbrev-commit --graph";
+    };
+    extraConfig.init.defaultBranch = "main";
+    extraConfig = {
+      url."ssh://git@github.com/".insteadOf = "https://github.com/"; # Force ssh in repos
+    };
+  };
+#+end_src
 
 ** Emacs
 
