@@ -1,6 +1,6 @@
 #+title: Nixos Configs
 #+date: <2025-02-05 水>
-#+HUGO_BASE_DIR: ../../
+#+HUGO_BASE_DIR: ../../content/config/
 #+HUGO_SECTION: ./config
 #+EXPORT_FILE_NAME: nixos
 #+HUGO_CATEGORIES: programming

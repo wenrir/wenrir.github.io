@@ -1,5 +1,5 @@
 #+title: Exercises
-#+HUGO_BASE_DIR: ../
+#+HUGO_BASE_DIR: ../content
 #+HUGO_SECTION: exercises
 
 * Exercises
