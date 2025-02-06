@@ -35,8 +35,6 @@ My configurations follow the following structure, with modules and configs being
 #+begin_src sh
 nix-shell -p tree --command "tree ~/nixos"
 #+end_src
-
-#+RESULTS:
 | ~/nixos         |              |                            |                    |              |               |
 | ├──             | flake.lock   |                            |                    |              |               |
 | ├──             | flake.nix    |                            |                    |              |               |
@@ -127,14 +125,14 @@ nix-shell -p tree --command "tree ~/nixos"
 
 I'll not go in to much detail about each file and directory so here's a short summary;
 
-+ nixos/flake.nix : root flake.
-+ nixos/nixos/ : Nix specific configurations, imports modules from nixos/modules/nix/
-+ nixos/home-manager/ : Home manager specific configurations, imports modules from nixos/modules/home-manager/
+- nixos/flake.nix : root flake.
+- nixos/nixos/ : Nix specific configurations, imports modules from nixos/modules/nix/
+- nixos/home-manager/ : Home manager specific configurations, imports modules from nixos/modules/home-manager/
 
-+ nixos/modules/{nix, home-manager}/ : Each sub directory contain program specific configurations.
-+ nixos/modules/{nix, home-manager}/default.nix : Exposes each sub directories configuration to the root nix or home-manager config.
+- nixos/modules/{nix, home-manager}/ : Each sub directory contain program specific configurations.
+- nixos/modules/{nix, home-manager}/default.nix : Exposes each sub directories configuration to the root nix or home-manager config.
 
-+ nixos/overlays : overlays..
+- nixos/overlays : overlays..
 
 
 **** Don't forget to add shell to org babel
