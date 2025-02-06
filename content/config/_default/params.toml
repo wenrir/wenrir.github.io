@@ -1,8 +1,14 @@
 title = 'wenrir'
 
+description = "Mainly collection of notes that other might but most likely wont find useful."
+favicon = "static/images/logo.svg"
+dateFormat = "2006-01-02"
+generateSocialCard = true
+[params.social]
+  github = "github.com/wenrir" # Twitter handle (without '@')
+
 showLineNumbers = true
 uniqueHomePage = false
-#
 enableCopyright = false
 
 mainSections = ["posts", "notes"]
