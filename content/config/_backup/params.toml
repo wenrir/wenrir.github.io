@@ -1,0 +1,9 @@
+mode="dark" # color-mode → light,dark,toggle or auto
+useCDN=false # don't use CDNs for fonts and icons, instead serve them locally.
+subtitle = "Mainly collection of notes that other might but most likely wont find useful."
+mathjax = true # enable MathJax support
+katex = true # enable KaTeX support
+[[params.social]]
+  name = "github"
+  url  = "https://github.com/wenrir/"
+

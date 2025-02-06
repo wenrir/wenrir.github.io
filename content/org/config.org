@@ -3,7 +3,7 @@
 #+HUGO_SECTION: ./config
 
 
-* Configs
+* Config
 :PROPERTIES:
 :EXPORT_FILE_NAME: _index
 :END:
