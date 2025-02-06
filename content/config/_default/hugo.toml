@@ -1,0 +1,29 @@
+languageCode = 'en-us'
+title = 'wenrir'
+theme = "doks"
+baseURL = 'https://wenrir.github.io/'
+canonifyURLs = false
+disableAliases = true
+disableHugoGeneratorInject = true
+enableEmoji = true
+enableGitInfo = false
+enableRobotsTXT = true
+paginate = 10
+rssLimit = 10
+summarylength = 20 # 70 (default)
+defaultContentLanguage = "en"
+
+copyRight = ""
+
+[build.buildStats]
+  enable = true
+
+[outputs]
+  home = ["HTML", "RSS"]
+  section = ["HTML", "RSS"]
+
+[params]
+  subtitle = 'It is the truth which conceals that there is none...'
+
+[markup.goldmark.renderer]
+  unsafe = true

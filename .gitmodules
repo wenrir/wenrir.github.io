@@ -1,6 +1,6 @@
 [submodule "content/themes/compose"]
 	path = content/themes/compose
 	url = https://github.com/onweru/compose/
-[submodule "content/themes/PaperMod"]
-	path = content/themes/PaperMod
-	url = https://github.com/adityatelange/hugo-PaperMod.git
+[submodule "content/themes/doks"]
+	path = content/themes/doks
+	url = git@github.com:thuliteio/doks.git
