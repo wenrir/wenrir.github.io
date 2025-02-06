@@ -26,7 +26,7 @@ buildExpired= false
   description ='Mainly collection of notes that other might but most likely wont find useful.' #'It is the truth which conceals that there is none...'
   author = "Me"
   DateFormat= "January 2, 2006"
-  defaultTheme= dark # dark, light
+  defaultTheme= "dark" # dark, light
   disableThemeToggle= true
 
   ShowReadingTime= true
@@ -55,7 +55,7 @@ buildExpired= false
   Title= "www"
 
 [[socialIcons]]
-  name= github
+  name= "github"
   url="https://github.com/"
 
 [markup.goldmark.renderer]
