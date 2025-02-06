@@ -22,7 +22,7 @@ buildExpired= false
   minifyOutput= true
 
 [params]
-  env = production
+  env = "production"
   description ='Mainly collection of notes that other might but most likely wont find useful.' #'It is the truth which conceals that there is none...'
   author = "Me"
   DateFormat= "January 2, 2006"
