@@ -1,9 +1,10 @@
 #+title: Notes
 #+HUGO_BASE_DIR: ../content
+#+HUGO_SECTION: notes
 
 * Notes
 :PROPERTIES:
 :EXPORT_FILE_NAME: notes
 :END:
 
-Here are some tutorials.
+Here are some notes.
