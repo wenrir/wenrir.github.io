@@ -1,10 +1,9 @@
 #+title: Exercises
-#+HUGO_BASE_DIR: ../content
-#+HUGO_SECTION: exercises
+#+HUGO_BASE_DIR: ../
 
 * Exercises
 :PROPERTIES:
-:EXPORT_FILE_NAME: _index
+:EXPORT_FILE_NAME: exercises
 :END:
 
 Here are some exercises.

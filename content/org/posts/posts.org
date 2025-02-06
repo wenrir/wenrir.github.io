@@ -1,5 +1,5 @@
 #+title: Posts
-#+HUGO_BASE_DIR: ../content
+#+HUGO_BASE_DIR: .
 #+HUGO_SECTION: posts
 
 * Posts

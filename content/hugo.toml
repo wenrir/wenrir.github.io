@@ -29,7 +29,7 @@ copyright = "© W"
 [markup.goldmark.renderer]
   unsafe = true
 
-[author]
+[params.author]
   name = "wenrir"
 
 [params]
