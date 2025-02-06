@@ -1,6 +1,6 @@
 #+title: Config
-#+HUGO_BASE_DIR: ../
-#+HUGO_SECTION: ./config
+#+HUGO_BASE_DIR: ../content
+#+HUG_SECTION: ./config
 
 
 * Config
