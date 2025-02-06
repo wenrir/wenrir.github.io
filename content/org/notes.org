@@ -4,7 +4,7 @@
 
 * Notes
 :PROPERTIES:
-:EXPORT_FILE_NAME: _index
+:EXPORT_FILE_NAME: notes
 :END:
 
-Here are some tutorials.
+Here are some notes.

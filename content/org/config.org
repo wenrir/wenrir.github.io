@@ -1,6 +1,6 @@
 #+title: Config
 #+HUGO_BASE_DIR: ../content
-#+HUG_SECTION: ./config
+#+HUGO_SECTION: config
 
 
 * Config
@@ -8,6 +8,312 @@
 :EXPORT_FILE_NAME: _index
 :END:
 
-
 Please note that the configs presented here are incomplete and just for demonstration, if configuring and running on your own system make sure to understand the content carefully.
 
+
+* Nixos
+:PROPERTIES:
+:HUGO_BASE_DIR: ../content
+:HUGO_SECTION: nix 
+:EXPORT_FILE_NAME: nixos
+:HUGO_CATEGORIES: programming
+:HUGO_DRAFT: false
+:COMMENTS: true
+:HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:HUGO_TAGS: nix emacs
+:END:
+
+
+Some references:
+
+Nix flakes : https://nixos.wiki/wiki/flakes
+Home manager : https://github.com/nix-community/home-manager
+
+
+** Directory tree
+My configurations follow the following structure, with modules and configs being updated and added continuously.
+
+
+#+begin_src sh
+nix-shell -p tree --command "tree ~/nixos"
+#+end_src
+
+#+RESULTS:
+| ~/nixos         |              |                            |                    |              |               |
+| ├──             | flake.lock   |                            |                    |              |               |
+| ├──             | flake.nix    |                            |                    |              |               |
+| ├──             | home-manager |                            |                    |              |               |
+| │               | ├──          | flake.lock                 |                    |              |               |
+| │               | ├──          | flake.nix                  |                    |              |               |
+| │               | ├──          | home-gaming.nix            |                    |              |               |
+| │               | └──          | home.nix                   |                    |              |               |
+| ├──             | modules      |                            |                    |              |               |
+| │               | ├──          | home-manager               |                    |              |               |
+| │               | │            | ├──                        | browser            |              |               |
+| │               | │            | │                          | └──                | firefox.nix  |               |
+| │               | │            | ├──                        | colors             |              |               |
+| │               | │            | │                          | └──                | stylix.nix   |               |
+| │               | │            | ├──                        | default.nix        |              |               |
+| │               | │            | ├──                        | emacs              |              |               |
+| │               | │            | │                          | ├──                | emacs.nix    |               |
+| │               | │            | │                          | ├──                | init         |               |
+| │               | │            | │                          | │                  | ├──          | general.org   |
+| │               | │            | │                          | │                  | ├──          | init.org      |
+| │               | │            | │                          | ├──                | Makefile     |               |
+| │               | │            | │                          | └──                | util         |               |
+| │               | │            | │                          | └──                | tangle.ros   |               |
+| │               | │            | ├──                        | hyprland           |              |               |
+| │               | │            | │                          | ├──                | default.nix  |               |
+| │               | │            | │                          | ├──                | eww          |               |
+| │               | │            | │                          | │                  | ├──          | eww.scss      |
+| │               | │            | │                          | │                  | └──          | eww.yuck      |
+| │               | │            | │                          | ├──                | eww.nix      |               |
+| │               | │            | │                          | └──                | hyprlock.nix |               |
+| │               | │            | ├──                        | launchers          |              |               |
+| │               | │            | │                          | └──                | tofi.nix     |               |
+| │               | │            | ├──                        | lisp               |              |               |
+| │               | │            | │                          | └──                | cl.nix       |               |
+| │               | │            | ├──                        | rust               |              |               |
+| │               | │            | │                          | └──                | rust.nix     |               |
+| │               | │            | ├──                        | shell              |              |               |
+| │               | │            | │                          | ├──                | scripts      |               |
+| │               | │            | │                          | │                  | └──          | run-shell.zsh |
+| │               | │            | │                          | └──                | zsh.nix      |               |
+| │               | │            | ├──                        | terminal-emulators |              |               |
+| │               | │            | │                          | ├──                | wez          |               |
+| │               | │            | │                          | │                  | └──          | helpers.lua   |
+| │               | │            | │                          | └──                | wez.nix      |               |
+| │               | │            | ├──                        | wallpaper          |              |               |
+| │               | │            | │                          | └──                | mushroom.jpg |               |
+| │               | │            | └──                        | zig                |              |               |
+| │               | │            | └──                        | zig.nix            |              |               |
+| │               | └──          | nix                        |                    |              |               |
+| │               | ├──          | audio                      |                    |              |               |
+| │               | │            | └──                        | pipewire.nix       |              |               |
+| │               | ├──          | default.nix                |                    |              |               |
+| │               | ├──          | docker                     |                    |              |               |
+| │               | │            | └──                        | docker.nix         |              |               |
+| │               | ├──          | emacs                      |                    |              |               |
+| │               | │            | └──                        | emacsd.nix         |              |               |
+| │               | ├──          | firewall                   |                    |              |               |
+| │               | │            | └──                        | firewall.nix       |              |               |
+| │               | ├──          | fonts                      |                    |              |               |
+| │               | │            | └──                        | fonts.nix          |              |               |
+| │               | ├──          | hyprland                   |                    |              |               |
+| │               | │            | ├──                        | default.nix        |              |               |
+| │               | │            | └──                        | greet.nix          |              |               |
+| │               | ├──          | keyboard                   |                    |              |               |
+| │               | │            | ├──                        | evremap.nix        |              |               |
+| │               | │            | └──                        | spell.nix          |              |               |
+| │               | └──          | vpn                        |                    |              |               |
+| │               | └──          | mullvad.nix                |                    |              |               |
+| ├──             | nix          |                            |                    |              |               |
+| │               | ├──          | configuration.nix          |                    |              |               |
+| │               | ├──          | gaming.nix                 |                    |              |               |
+| │               | └──          | hardware-configuration.nix |                    |              |               |
+| └──             | overlays     |                            |                    |              |               |
+| └──             | default.nix  |                            |                    |              |               |
+|                 |              |                            |                    |              |               |
+| 31              | directories, | 51                         | files              |              |               |
+
+
+
+I'll not go in to much detail about each file and directory so here's a short summary;
+
++ nixos/flake.nix : root flake.
++ nixos/nixos/ : Nix specific configurations, imports modules from nixos/modules/nix/
++ nixos/home-manager/ : Home manager specific configurations, imports modules from nixos/modules/home-manager/
+
++ nixos/modules/{nix, home-manager}/ : Each sub directory contain program specific configurations.
++ nixos/modules/{nix, home-manager}/default.nix : Exposes each sub directories configuration to the root nix or home-manager config.
+
++ nixos/overlays : overlays..
+
+
+**** Don't forget to add shell to org babel
+
+In order to run shell from org block; 
+
+#+name: Babel languages
+#+begin_src emacs-lisp
+(org-babel-do-load-languages 'org-babel-load-languages
+    '(
+        (shell . t)
+        (emacs-lisp . t)
+    )
+)
+#+end_src
+
+** Bare repository
+
+Nixos configs are stored in a bare repository and utilizing config alias to easily interact with the repository.
+
+#+begin_src sh
+# Source zsh config.
+zsh -c "source ~/.zshrc && which config"
+#+end_src
+
+#+RESULTS:
+: config: aliased to $HOME/.nix-profile/bin/git --git-dir=$HOME/config --work-tree=$HOME/nixos
+
+** Emacs
+
+All emacs configurations are stored as
+
+| ~/nixos         |              |                            |                    |              |               |
+| ├──             | modules      |                            |                    |              |               |
+| │               | ├──          | home-manager               |                    |              |               |
+| │               | │            | ├──                        | emacs              |              |               |
+| │               | │            | │                          | ├──                | emacs.nix    |               |
+| │               | │            | │                          | ├──                | init         |               |
+| │               | │            | │                          | │                  | ├──          | general.org   |
+| │               | │            | │                          | │                  | ├──          | init.org      |
+| │               | │            | │                          | ├──                | Makefile     |               |
+| │               | │            | │                          | └──                | util         |               |
+| │               | │            | │                          | └──                | tangle.ros   |               |
+
++ emacs.nix :  nix specific emacs configurations.
++ init :  literate configuration files.
++ util : Utility scripts to tangle configuration files
++ Makefile : to easily tangle configurations.
+
+
+Structure inspired from my arch literate setup : https://github.com/wenrir/.org
+
+#+name: Makefile content
+#+begin_src makefile
+##
+# .org Makefile
+#
+# @file
+# @version 0.1
+PROJECT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+TANGLE-exists: ; @ls $(PROJECT_DIR)/.tangle > /dev/null 2>&1
+.DEFAULT_GOAL := help
+.PHONY: build
+## Build tangle script
+build: 
+	@nix-shell -p roswell --command "ros build $(PROJECT_DIR)/util/tangle.ros && mv $(PROJECT_DIR)/util/tangle $(PROJECT_DIR)/.tangle"
+
+.PHONY: tangle
+## Build tangle script
+tangle: TANGLE-exists
+	$(shell $(PROJECT_DIR)/.tangle)
+
+.PHONY: help
+help:
+	@echo "$$(tput setaf 2)Make rules:$$(tput sgr0)";sed -ne"/^## /{h;s/.*//;:d" -e"H;n;s/^## /---/;td" -e"s/:.*//;G;s/\\n## /===/;s/\\n//g;p;}" ${MAKEFILE_LIST}|awk -F === -v n=$$(tput cols) -v i=4 -v a="$$(tput setaf 6)" -v z="$$(tput sgr0)" '{printf"- %s%s%s\n",a,$$1,z;m=split($$2,w,"---");l=n-i;for(j=1;j<=m;j++){l-=length(w[j])+1;if(l<= 0){l=n-i-length(w[j])-1;}printf"%*s%s\n",-i," ",w[j];}}'
+# end
+#+end_src
+
+The makefile will build `tangle.ros` as binary. (so ofcourse we need to enable sbcl in our nix config)
+#+name: modules/home-manager/lisp/cl.nix
+#+begin_example
+{
+  pkgs,
+  ...
+}: {
+  home.packages = with pkgs;[
+    pkgs.sbcl
+  ];
+}
+#+end_example
+
+`tangle.ros` exports and tangles the org files, with some additional cleanup.
+
+#+begin_src emacs-lisp
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#|
+exec ros -Q -- $0 "$@"
+|#
+(progn ;;init forms
+  (ros:ensure-asdf)
+  #+quicklisp(ql:quickload '() :silent t))
+(defpackage :ros.script.tangle.3912471334
+  (:use :cl))
+(in-package :ros.script.tangle.3912471334)
+;; Structure inspired by KUHY (https://github.com/kuhy/.dotfiles/blob/master/dot-tangle)
+(defvar *config-files* (directory #P"*/*.org"))
+(defvar *emacs-cmd* "emacs -Q --batch --eval")
+(defmacro e-org-cmd (fn-name cmd)
+  "Macro for creating a function that runs org command on file in emacs."
+  `(defun ,fn-name (files)
+     (progn
+       (dolist (file files)
+         (uiop:run-program (format nil "~a '(progn
+          (setq make-backup-files nil)
+            (with-current-buffer
+              (find-file-noselect \"~a\")
+              (~(~a~))))'" *emacs-cmd* file ,cmd) :output :string)))))
+
+(e-org-cmd tangle-export-to-org 'org-org-export-to-org)
+(e-org-cmd tangle-babel-tangle 'org-babel-tangle)
+
+(defun delete-files (files)
+  (dolist (file files)
+    (let ((f (probe-file file)))
+      (delete-file f))))
+
+(defun main (&rest argv)
+  (declare (ignorable argv))
+  (tangle-export-to-org *config-files*)
+  (tangle-babel-tangle (directory #P"*/*.org.org"))
+  (delete-files (directory #P"*/*.org.org")))
+;;; vim: set ft=lisp lisp:
+#+end_src
+
+
+We can now create any org file inside of the `init` directory, and the ros script will tangle these.
+
+
+#+name: Emacs config example
+#+begin_example
+
+#+title: Emacs Configs
+#+options: prop:t
+#+startup: fold
+\* General 
+:PROPERTIES:
+:header-args: :comments no :mkdirp yes :tangle /home/user/nixos/modules/home-manager/emacs/init/init.el :noweb tangle
+:END:
+
+(change to your own path for tangle).
+
+#+begin_src emacs-lisp
+(setq user-full-name "SOME ONE")
+#+end_src
+#+end_example
+
+Now what's missing is to tell nixos about where we store the tangled configs, 
+
+#+begin_src nix
+{
+  inputs,
+  pkgs,
+  ...
+}: {
+  home.file.".emacs.d/init.el".source = ./init/init.el; # Tell nixos the location of config file.
+  # We can ofcourse tangle multiple files, for example:
+  home.file.".emacs.d/general.el".source = ./init/general.el; 
+  home.file.".emacs.d/org.el".source = ./init/org.el; 
+  home.file.".emacs.d/keybinds.el".source = ./init/keybinds.el; 
+
+  programs.emacs = {
+    enable = true;
+    package = pkgs.emacs;
+    extraPackages = epkgs:
+      with epkgs; [
+         # What packages to use.
+      ];
+  };
+}
+#+end_src
+
+Now we need an easy way to update both home-manager (for packages) and emacs; 
+
+#+begin_src sh
+#change user to match your flake
+nix-shell -p gnumake --command 'make -C $HOME/nixos/modules/home-manager/emacs tangle' && home-manager switch --flake $HOME/nixos/#user@nixos --show-trace
+#which ofcourse can be stored as an alias.
+#+end_src
