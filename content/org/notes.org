@@ -4,7 +4,7 @@
 
 * Notes
 :PROPERTIES:
-:EXPORT_FILE_NAME: notes
+:EXPORT_FILE_NAME: _index
 :END:
 
 Here are some notes.

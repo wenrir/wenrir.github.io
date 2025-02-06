@@ -4,7 +4,7 @@
 
 * Exercises
 :PROPERTIES:
-:EXPORT_FILE_NAME: exercises
+:EXPORT_FILE_NAME: _index
 :END:
 
 Here are some exercises.

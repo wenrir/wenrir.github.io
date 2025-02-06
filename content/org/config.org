@@ -13,8 +13,6 @@ Please note that the configs presented here are incomplete and just for demonstr
 
 * Nixos
 :PROPERTIES:
-:HUGO_BASE_DIR: ../content
-:HUGO_SECTION: nix 
 :EXPORT_FILE_NAME: nixos
 :HUGO_CATEGORIES: programming
 :HUGO_DRAFT: false

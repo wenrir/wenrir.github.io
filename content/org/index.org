@@ -7,4 +7,5 @@
 :EXPORT_FILE_NAME: _index
 :END:
 
-Mainly collection of notes that other might but most likely wont find useful.
+
+It is the truth which conceals that there is none...
