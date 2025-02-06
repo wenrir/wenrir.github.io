@@ -35,7 +35,7 @@ copyright = "© W"
 [params]
 mode="dark" # color-mode → light,dark,toggle or auto
 useCDN=false # don't use CDNs for fonts and icons, instead serve them locally.
-subtitle = "Mainly collection of notes that other might but most likely wont find useful."
+subtitle = "Mainly collection of notes that other might but most likely wont find useful. Please be careful when using or refering to any information on this page, as it's not intended to be used for any other reason than learning."
 mathjax = true # enable MathJax support
 katex = true # enable KaTeX support
 [[params.social]]
@@ -46,25 +46,25 @@ katex = true # enable KaTeX support
   name = "Posts"
   identifier = "posts"
   weight = 5
-  url = "/posts"
+  url = "/content/posts"
 
 [[menu.main]]
   name = "Config"
   identifier = "config"
   weight = 2
-  url = "/config"
+  url = "/content/config"
 
 [[menu.main]]
   name = "Notes"
   identifier = "notes"
   weight = 2
-  url = "/notes"
+  url = "/content/notes"
 
 [[menu.main]]
   name = "Exercises"
   identifier = "exercises"
   weight = 2
-  url = "/exercises"
+  url = "/content/exercises"
 
 [[menu.main]]
 name = "Home"
