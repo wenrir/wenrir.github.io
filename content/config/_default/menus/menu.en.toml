@@ -1,19 +1,19 @@
 [[main]]
-  name = "Posts"
+  name = "posts"
   weight = 5
   url = "/posts/"
 
 [[main]]
-  name = "Configs"
+  name = "configs"
   weight = 2
   url = "/config/"
 
 [[main]]
-  name = "Notes"
+  name = "notes"
   weight = 2
   url = "/notes/"
 
 [[main]]
-  name = "Exercises"
+  name = "exercises"
   weight = 2
   url = "/exercises/"
