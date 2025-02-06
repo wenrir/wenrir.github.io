@@ -1,6 +1,6 @@
 languageCode = 'en-us'
 title = 'wenrir'
-theme = "doks"
+theme = "hugo-bearcub"
 baseURL = 'https://wenrir.github.io/'
 canonifyURLs = false
 disableAliases = true
@@ -10,10 +10,10 @@ enableGitInfo = false
 enableRobotsTXT = true
 paginate = 10
 rssLimit = 10
-summarylength = 20 # 70 (default)
+summarylength = 20 
 defaultContentLanguage = "en"
 
-copyRight = ""
+copyright = ""
 
 [build.buildStats]
   enable = true
@@ -21,9 +21,6 @@ copyRight = ""
 [outputs]
   home = ["HTML", "RSS"]
   section = ["HTML", "RSS"]
-
-[params]
-  subtitle = 'It is the truth which conceals that there is none...'
 
 [markup.goldmark.renderer]
   unsafe = true
