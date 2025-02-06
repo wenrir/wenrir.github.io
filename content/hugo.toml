@@ -1,6 +1,6 @@
 languageCode = 'en-us'
-title = 'wenrir'
-theme = "hello-friend-ng"
+title = 'Welcome!'
+theme = "archie"
 baseURL = 'https://wenrir.github.io/'
 canonifyURLs = false
 disableAliases = true
@@ -12,6 +12,11 @@ paginate = 10
 rssLimit = 10
 summarylength = 20 
 defaultContentLanguage = "en"
+pygmentsStyle          = "gruvbox"
+pygmentsCodeFences = true
+pygmentsCodefencesGuessSyntax = true
+pygmentsUseClasses = true
+
 
 copyright = ""
 
@@ -24,3 +29,6 @@ copyright = ""
 
 [markup.goldmark.renderer]
   unsafe = true
+
+[author]
+  name = "wenrir"

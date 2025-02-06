@@ -2,22 +2,22 @@
   name = "Posts"
   identifier = "posts"
   weight = 5
-  url = "/posts/"
+  url = "/posts"
 
 [[main]]
-  name = "Configs"
-  identifier = "configs"
+  name = "Config"
+  identifier = "config"
   weight = 2
-  url = "/config/"
+  url = "/config"
 
 [[main]]
   name = "Notes"
   identifier = "notes"
   weight = 2
-  url = "/notes/"
+  url = "/notes"
 
 [[main]]
   name = "Exercises"
   identifier = "exercises"
   weight = 2
-  url = "/exercises/"
+  url = "/exercises"
