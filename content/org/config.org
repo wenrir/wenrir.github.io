@@ -5,7 +5,7 @@
 
 * Config
 :PROPERTIES:
-:EXPORT_FILE_NAME: config
+:EXPORT_FILE_NAME: _index
 :END:
 
 Please note that the configs presented here are incomplete and just for demonstration, if configuring and running on your own system make sure to understand the content carefully.
