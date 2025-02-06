@@ -1,16 +1,11 @@
-user = 'wenrir'
-hostname = "wenrir.github.io"
-
-[params.author]
-  name = "wenrir" 
-
-readingTime = true  # Show reading time on post page
-published = true  # Show published data on post page
-
-[[params.social]]
-key = 0
-name = "github"
-url = "https://github.com/wenrir"
-target = "_blank"
-aria = "GitHub Profile"
-
+dateform        = "Jan 2, 2006"
+dateformShort   = "Jan 2"
+dateformNum     = "2006-01-02"
+dateformNumTime = "2006-01-02 15:04"
+homeSubtitle = "www"
+disableReadOtherPosts = false
+enableSharingButtons = true
+enableGlobalLanguageMenu = false
+description = "Mainly collection of notes that other might but most likely wont find useful."
+keywords = "homepage, blog"
+images = [""]

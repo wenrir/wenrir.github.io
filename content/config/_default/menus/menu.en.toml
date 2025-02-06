@@ -1,19 +1,23 @@
 [[main]]
-  name = "posts"
+  name = "Posts"
+  identifier = "posts"
   weight = 5
   url = "/posts/"
 
 [[main]]
-  name = "configs"
+  name = "Configs"
+  identifier = "configs"
   weight = 2
   url = "/config/"
 
 [[main]]
-  name = "notes"
+  name = "Notes"
+  identifier = "notes"
   weight = 2
   url = "/notes/"
 
 [[main]]
-  name = "exercises"
+  name = "Exercises"
+  identifier = "exercises"
   weight = 2
   url = "/exercises/"
