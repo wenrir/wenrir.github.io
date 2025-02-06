@@ -1,6 +1,6 @@
 languageCode = 'en-us'
 title = 'wenrir'
-theme = "hugo-bearcub"
+theme = "hello-friend-ng"
 baseURL = 'https://wenrir.github.io/'
 canonifyURLs = false
 disableAliases = true

@@ -1,3 +1,3 @@
-[submodule "content/themes/hugo-bearcub"]
-	path = content/themes/hugo-bearcub
-	url = https://github.com/clente/hugo-bearcub
+[submodule "content/themes/hello-friend-ng"]
+	path = content/themes/hello-friend-ng
+	url = https://github.com/rhazdon/hugo-theme-hello-friend-ng.git
