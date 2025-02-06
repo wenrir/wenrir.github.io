@@ -65,3 +65,8 @@ katex = true # enable KaTeX support
   identifier = "exercises"
   weight = 2
   url = "/exercises"
+
+[[menu.main]]
+name = "Home"
+url = "/"
+weight = 1
