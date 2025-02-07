@@ -11,7 +11,7 @@ It is the truth which conceals that there is none...
 
 * Crafting Interpreters in Common lisp [DRAFT, WIP]
 :PROPERTIES:
-:EXPORT_FILE_NAME: interpreters-cl
+:EXPORT_FILE_NAME: interpreterscl
 :HUGO_CATEGORIES: programming
 :HUGO_DRAFT: true
 :COMMENTS: true
@@ -20,9 +20,12 @@ It is the truth which conceals that there is none...
 :hugo_publishdate: 2025-02-07
 :END:
 
+(This is a copy from my notes on the book; craftinginterpreters. These are incomplete and the original note tangles an output file, which then was used parse/compile the LOX language in CL)
+
 This is an implementation of the Lox programming language in Common Lisp.
 The intention of this document is just for the authors learning and it's content should not be considered as accurate nor absolute.
 Please visit [[https://craftinginterpreters.com/][craftinginterpreters]] website for more information.
+
 
 ** Introduction
 [[file:crafting-interpreters/mountain.jpg][Mountain]]
@@ -47,9 +50,6 @@ In the middle, the code may be stored in some intermediate representation (IR) t
 
 *** Back end (to bytecode or machine code)
 ** Util
-:PROPERTIES:
-:header-args: :comments no :mkdirp yes :tangle ./craftinginterpreters.lisp :noweb tangle
-:END:
 #+name: (Let Over Lambda (ISBN 978-1-4357-1275-1, 376+iv pp.) production code)
 #+begin_src lisp
 (ql:quickload "let-over-lambda")
@@ -59,12 +59,9 @@ In the middle, the code may be stored in some intermediate representation (IR) t
 #+RESULTS: (Let Over Lambda (ISBN 978-1-4357-1275-1, 376+iv pp.) production code)
 : T
 ** Scanning
-:PROPERTIES:
-:header-args: :comments no :mkdirp yes :tangle ./craftinginterpreters.lisp :noweb tangle
-:END:
 The first step in any compiler or interpreter is scanning (lexing 󰱹 ).
 
-We need to represent raw source code as tokens, meaningful "words", "punctuations" etc that make up the language's grammer.
+We need to represent raw source code as tokens, meaningful "words", "punctuations" etc that make up the language's grammar.
 
 *** Interpreter framework
 **** Reading inputs
