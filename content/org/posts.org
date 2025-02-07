@@ -27,7 +27,6 @@ The intention of this document is just for the authors learning and it's content
 Please visit [[https://craftinginterpreters.com/][craftinginterpreters]] website for more information.
 
 ** Introduction
-[[file:crafting-interpreters/mountain.jpg][Mountain]]
 
 *** Front end (from source code)
 **** Scanning (or lexing)
