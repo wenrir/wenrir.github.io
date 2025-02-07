@@ -32,9 +32,11 @@ Home manager : https://github.com/nix-community/home-manager
 My configurations follow the following structure, with modules and configs being updated and added continuously.
 
 
-#+begin_src sh
+#+begin_src sh :exports both
 nix-shell -p tree --command "tree ~/nixos"
 #+end_src
+
+#+RESULTS:
 | ~/nixos         |              |                            |                    |              |               |
 | ├──             | flake.lock   |                            |                    |              |               |
 | ├──             | flake.nix    |                            |                    |              |               |
@@ -53,16 +55,8 @@ nix-shell -p tree --command "tree ~/nixos"
 | │               | │            | ├──                        | emacs              |              |               |
 | │               | │            | │                          | ├──                | emacs.nix    |               |
 | │               | │            | │                          | ├──                | init         |               |
-| │               | │            | │                          | │                  | ├──          | general.el    |
 | │               | │            | │                          | │                  | ├──          | general.org   |
-| │               | │            | │                          | │                  | ├──          | init.el       |
 | │               | │            | │                          | │                  | ├──          | init.org      |
-| │               | │            | │                          | │                  | ├──          | init.org~     |
-| │               | │            | │                          | │                  | ├──          | keybinds.el   |
-| │               | │            | │                          | │                  | ├──          | org.el        |
-| │               | │            | │                          | │                  | ├──          | packages.el   |
-| │               | │            | │                          | │                  | ├──          | sly.el        |
-| │               | │            | │                          | │                  | └──          | visual.el     |
 | │               | │            | │                          | ├──                | Makefile     |               |
 | │               | │            | │                          | └──                | util         |               |
 | │               | │            | │                          | └──                | tangle.ros   |               |
@@ -118,7 +112,6 @@ nix-shell -p tree --command "tree ~/nixos"
 | └──             | overlays     |                            |                    |              |               |
 | └──             | default.nix  |                            |                    |              |               |
 |                 |              |                            |                    |              |               |
-| 31              | directories, | 51                         | files              |              |               |
 
 
 
@@ -153,7 +146,7 @@ In order to run shell from org block;
 
 Nixos configs are stored in a bare repository and utilizing config alias to easily interact with the repository.
 
-#+begin_src sh
+#+begin_src sh :exports both
 # Source zsh config.
 zsh -c "source ~/.zshrc && which config"
 #+end_src
