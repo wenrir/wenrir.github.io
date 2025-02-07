@@ -1,5 +1,5 @@
 languageCode = 'en-us'
-title = 'Welcome!'
+title = 'W'
 theme = "archie"
 baseURL = 'https://wenrir.github.io/'
 canonifyURLs = false
@@ -17,7 +17,7 @@ pygmentsCodeFences = true
 pygmentsCodefencesGuessSyntax = true
 pygmentsUseClasses = true
 
-copyright = "© W"
+copyright = "© There's no copyright on the internet."
 
 [build.buildStats]
   enable = true
@@ -35,7 +35,7 @@ copyright = "© W"
 [params]
 mode="dark" # color-mode → light,dark,toggle or auto
 useCDN=false # don't use CDNs for fonts and icons, instead serve them locally.
-subtitle = "Mainly collection of notes that other might but most likely wont find useful. Please be careful when using or refering to any information on this page, as it's not intended to be used for any other reason than learning."
+subtitle = "Mainly collection of notes that other might but most likely wont find useful. Please be careful when using or refering to any information on these pages, as it's not intended to be used for any other reason than my own learning."
 mathjax = true # enable MathJax support
 katex = true # enable KaTeX support
 [[params.social]]

@@ -7,4 +7,646 @@
 :EXPORT_FILE_NAME: _index
 :END:
 
-Here are some posts.
+It is the truth which conceals that there is none...
+
+* Crafting Interpreters in Common lisp [DRAFT, WIP]
+:PROPERTIES:
+:EXPORT_FILE_NAME: interpreterscl
+:HUGO_CATEGORIES: programming
+:HUGO_DRAFT: true
+:COMMENTS: true
+:HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:HUGO_TAGS: interpreters common lisp
+:hugo_publishdate: 2025-02-07
+:END:
+
+(This is a copy from my notes on the book; craftinginterpreters. These are incomplete and the original note tangles an output file.)
+
+This is an implementation of the Lox programming language in Common Lisp.
+The intention of this document is just for the authors learning and it's content should not be considered as accurate nor absolute.
+Please visit [[https://craftinginterpreters.com/][craftinginterpreters]] website for more information.
+
+** Introduction
+
+*** Front end (from source code)
+**** Scanning (or lexing)
+Takes in the linear stream of characters and chunks them together into a series of something more akin to "words". In programming languages each of these words are called a token.
+
+**** Parsing
+A parser takes the flat sequence of tokens and builds a tree structure that mirrors the nested nature of the grammar. These trees have a couple of different names—parse tree or abstract syntax tree—depending on how close to the bare syntactic structure of the source language they are. In practice, language hackers usually call them syntax trees, ASTs, or often just trees.
+**** Static analysis
+The first bit of analysis that most languages do is called binding or resolution. For each identifier, we find out where that name is defined and wire the two together. This is where scope comes into play—the region of source code where a certain name can be used to refer to a certain declaration.
+
+If the language is statically typed, this is when we type check. Once we know where a and b are declared, we can also figure out their types. Then if those types don’t support being added to each other, we report a type error.
+*** Middle end (to high level language)
+**** Intermediate representations
+Basically an interface between front (language) and back end(code gen).
+
+You write one front end for each source language that produces the IR. Then one back end for each target architecture. Now you can mix and match those to get every combination.
+
+In the middle, the code may be stored in some intermediate representation (IR) that isn’t tightly tied to either the source or destination forms (hence “intermediate”). Instead, the IR acts as an interface between these two languages.
+
+*** Back end (to bytecode or machine code)
+** Util
+:PROPERTIES:
+:header-args: :comments no :mkdirp yes :tangle ./craftinginterpreters.lisp :noweb tangle
+:END:
+#+name: (Let Over Lambda (ISBN 978-1-4357-1275-1, 376+iv pp.) production code)
+#+begin_src lisp
+(ql:quickload "let-over-lambda")
+(use-package 'let-over-lambda)
+#+end_src
+
+#+RESULTS: (Let Over Lambda (ISBN 978-1-4357-1275-1, 376+iv pp.) production code)
+: T
+** Scanning
+:PROPERTIES:
+:header-args: :comments no :mkdirp yes :tangle ./craftinginterpreters.lisp :noweb tangle
+:END:
+The first step in any compiler or interpreter is scanning (lexing 󰱹 ).
+
+We need to represent raw source code as tokens, meaningful "words", "punctuations" etc that make up the language's grammer.
+
+*** Interpreter framework
+**** Reading inputs
+Let's read a file
+#+name: Read file
+#+begin_src lisp :noweb yes
+(defun file-scanner (path)
+  (let ((content (coerce (uiop::read-file-string path) 'list)))
+    (lambda ()
+        (format t "~A" content))))
+#+end_src
+
+#+RESULTS: Read file
+: FILE-SCANNER
+
+
+#+begin_quote
+Binding *read-eval* to nil is useful when reading data that came from an untrusted source, such as a network or a user-supplied data file; it prevents the #. read macro from being exploited as a "Trojan Horse" to cause arbitrary forms to be evaluated.
+---Let Over Lambda (ISBN 978-1-4357-1275-1, 376+iv pp.) Doug Hoyte
+#+end_quote
+
+#+name: Read user input
+#+begin_src lisp :noweb yes
+(defvar read-user-input (let ((*read-eval* nil))
+  (lambda () (read *query-io*))))
+#+end_src
+
+#+RESULTS: Read user input
+: READ-USER-INPUT
+
+read-user-input to be used with loop to continuously prompt user inputs.
+
+**** Error handling
+#+name: Error handling and formatting.
+#+begin_src lisp
+(defvar *scan-error*
+  (let ((e nil))
+    (defun toggle-error(line where error)
+      (format t "~%[line ~A] Error at ~A : ~A ~%" line where error)
+      (setq e t))
+    (defun had-error()
+      e)))
+#+end_src
+
+#+RESULTS: Error handling and formatting.
+: *SCAN-ERROR*
+
+Now we can toggle an error with:
+#+begin_src lisp
+(toggle-error "1" "2" "Some error message")
+;; Then either read error with
+(had-error)
+;; or calling the var directly as it's the last lambda of the let binding.
+(funcall *scan-error*)
+#+end_src
+
+#+RESULTS:
+: T
+
+**** Tokens
+***** Types
+Here we define keywords, which are part of the shape of the languages grammar. The parser would like to know "lexeme" (a blob of characters that defined an "operation", e.g. "var" or ";") for some identifier but also it needs to keep track of a "reserved" word and which keyword it is.
+
+In terms of lisp, I am not really a fan of using enums even though they serve their purpose quite well.
+However, I do not wish to deviate from the book to much in this implementation. Thus let's use `cffi` to create token type enum.
+
+#+name: Import cffi
+#+begin_src lisp
+;;; Available through quicklisp
+(ql:quickload 'cffi)
+(use-package 'cffi)
+#+end_src
+
+#+RESULTS: Import cffi
+: T
+
+#+name: Tokens
+#+begin_src lisp
+(cffi:defcenum token-type
+  "Copied from LOX TokenType enum"
+    ;;; Single-character tokens.
+    (:LEFT_PAREN 0)
+    :RIGHT_PAREN
+    :LEFT_BRACE
+    :RIGHT_BRACE
+    :COMMA
+    :DOT
+    :MINUS
+    :PLUS
+    :SEMICOLON
+    :SLASH
+    :STAR
+
+    ;;; One or two character tokens.
+    :BANG
+    :BANG_EQUAL
+    :EQUAL
+    :EQUAL_EQUAL
+    :GREATER
+    :GREATER_EQUAL
+    :LESS
+    :LESS_EQUAL
+
+    ;;; Literals.
+    :IDENTIFIER
+    :STRING
+    :NUMBER
+
+    ;;; Keywords.
+    :AND
+    :CLASS
+    :ELSE
+    :FALSE
+    :FUN
+    :FOR
+    :IF
+    :NIL
+    :OR
+    :PRINT
+    :RETURN
+    :SUPER
+    :THIS
+    :TRUE
+    :VAR
+    :WHILE
+
+    :EOF)
+#+end_src
+
+#+RESULTS: Tokens
+: TOKEN-TYPE
+
+Lets try it out
+
+#+begin_src lisp
+(foreign-enum-keyword 'token-type 2)
+#+end_src
+
+#+RESULTS:
+: :LEFT_BRACE
+
+***** Location information
+Let's implement "where" a token appears.
+
+#+name: Token object
+#+begin_src lisp
+(defstruct token
+  type
+  lexeme
+  literal
+  line)
+#+end_src
+
+#+RESULTS: Token object
+: TOKEN
+
+#+name: Example
+#+begin_src lisp
+(make-token :type "type" :lexeme "lexeme" :literal "literal" :line 123)
+#+end_src
+
+#+RESULTS: Example
+: #S(TOKEN :TYPE "type" :LEXEME "lexeme" :LITERAL "literal" :LINE 123)
+
+***** Character to lexeme mapping
+We need some method for the scanner to figure out what characters belongs to which lexeme
+The rules that determine how a particular language groups characters into lexemes are called its lexical grammar.
+
+This is where lexical analysis comes in, we can use regex but also tools such as [[https://github.com/westes/flex][FLEX]].
+
+Common lisp has:
++ https://github.com/quil-lang/alexa
+  + ALEXA is a tool similar to lex or flex for generating lexical analyzers. Unlike tools like lex, however, ALEXA defines a domain-specific language within your Lisp program, so you don't need to invoke a separate tool.
++ https://github.com/ruricolist/cl-shlex/
+  + A lexer for syntaxes that use shell-like rules for quoting and commenting. It is a port of the shlex module from Python’s standard library.
+
+But for the sake of learning (and as it's the goal of the book to understand how a scanner works), we will implement the lexical analyzer.
+
+**** Scanner
+Main implementation of our scanner!
+***** Finding Lexemes
+#+name: Operation map
+#+begin_src lisp
+(defparameter *token-map* (list
+                            (cons '|(| '(lambda (source start current l) (make-token :type (foreign-enum-value 'token-type :left_paren) :lexeme (subseq source start current) :literal nil :line l)))
+                            (cons '|)| '(lambda (source start current l) (make-token :type (foreign-enum-value 'token-type :right_paren) :lexeme (subseq source start current) :literal nil :line l)))
+                            (cons '|{| '(lambda (source start current l) (make-token :type (foreign-enum-value 'token-type :left_brace) :lexeme (subseq source start current) :literal nil :line l)))
+                            (cons '|}| '(lambda (source start current l) (make-token :type (foreign-enum-value 'token-type :right_brace) :lexeme (subseq source start current) :literal nil :line l)))
+                            (cons '|,| '(lambda (source start current l) (make-token :type (foreign-enum-value 'token-type :comma) :lexeme (subseq source start current) :literal nil :line l)))
+                            (cons '|.| '(lambda (source start current l) (make-token :type (foreign-enum-value 'token-type :dot) :lexeme (subseq source start current) :literal nil :line l)))
+                            (cons '|-| '(lambda (source start current l) (make-token :type (foreign-enum-value 'token-type :minus) :lexeme (subseq source start current) :literal nil :line l)))
+                            (cons '|+| '(lambda (source start current l) (make-token :type (foreign-enum-value 'token-type :plus) :lexeme (subseq source start current) :literal nil :line l)))
+                            (cons '|;| '(lambda (source start current l) (make-token :type (foreign-enum-value 'token-type :semicolon) :lexeme (subseq source start current) :literal nil :line l)))
+                            (cons '|*| '(lambda (source start current l) (make-token :type (foreign-enum-value 'token-type :star) :lexeme (subseq source start current) :literal nil :line l)))))
+
+#+end_src
+
+#+RESULTS: Operation map
+: *TOKEN-MAP*
+
+#+name: Scanner
+#+begin_src lisp
+;; TODO FIXME !
+(setf (symbol-function 'scanner)
+      (let ((tokens nil)
+            (source nil)
+            (start 0)
+            (l 1)) ;; Line
+        (dlambda
+         (:update-source (s) (setq source s))
+         (:tokens() (format t "~A" tokens))
+         (:scan ()
+                (setq start 0)
+                (catch 'no-source
+                 (unless source
+                   (format t "Unable to find source.")
+                   (throw 'no-source 'no-source-exception))
+                 (loop with current = 0
+                       for character across source
+                       do (progn
+                            (setq start current)
+                            (incf current)
+                            (cond
+                              ((and (< current (length source))
+                                    (eq '|=| (intern (string (char source current))))
+                                    (or (eq '|!| (intern (string character)))
+                                        (eq '|=| (intern (string character)))
+                                        (eq '|<| (intern (string character)))
+                                        (eq '|>| (intern (string character)))))
+                               (let ((concat (format nil "~A~A" character (char source current))))
+                                (push (funcall (eval (cdr (assoc (intern (string concat)) *token-map*))) source start current l) tokens)))
+                              ((cdr (assoc (intern (string character)) *token-map*))
+                               (push (funcall (eval (cdr (assoc (intern (string character)) *token-map*))) source start current l) tokens))
+                              (t
+                               (toggle-error l current (format nil "Unexpected token ~A" character)))))))))))
+
+
+#+end_src
+
+#+RESULTS: Scanner
+: #<FUNCTION (LAMBDA (&REST #:ARGS0)) {10027CF91B}>
+
+* Zig build system
+:PROPERTIES:
+:EXPORT_FILE_NAME: zigbuild
+:HUGO_CATEGORIES: programming
+:HUGO_DRAFT: false
+:COMMENTS: true
+:HUGO_CUSTOM_FRONT_MATTER: :toc true :comments true
+:HUGO_TAGS: zig build
+:hugo_publishdate: 2025-02-07
+:END:
+
+#+begin_src sh :exports both
+# Version used
+zig version
+#+end_src
+
+#+RESULTS:
+: 0.13.0
+
+Recently I'm trying to learn [[https:ziglang.org][Zig]] to use as main language for writing my bare-metal pi kernel. 
+
+#+BEGIN_COMMENT
+I've little to none knowledge in how Zig (nor pi) works and would like to state that the information below might be incorrect. 
+
+I mainly write this in order to possibly help (or mislead...) someone else that might experience similar issue(s). 
+
+Please refer to https://ziggit.dev/ for better support.
+#+END_COMMENT
+
+Quickly I got stuck trying to modify the build file to target a different architecture, skimming through the [[https://ziglang.org/learn/build-system/][build system documentation]] trying to look for how input parameters are structured ( for example `.target` to `addExecutable`) and options were available, even more questions arose.
+
+Because my rotting brain has the same attention span as the cycle time of a low latency trading application, it wasn't very clear how input parameters are structured.
+
+A side note;
+
+#+BEGIN_COMMENT
+Zig has a concept called [[https://zig.guide/language-basics/anonymous-structs][Anonymous Structs]] (basically a tuple with field names), and these will have the same properties as arrays. 
+Meaning that these can be indexed, iterated over etc., which comes handy when we write our build script.
+#+END_COMMENT
+
+The [[https://github.com/ziglang/zig/tree/master/doc][Zig documentation]], [[https://github.com/the-argus/zig-buildsystem-docs/blob/main/EXAMPLE_01_BASIC_EXECUTABLE.md][Zig build system docs]] and [[https://zig.guide/build-system/zig-build/][Zig guide]], provides some insight in how inputs are structured. 
+
+Each function in `std.Build` takes these anonymous structs as input options.
+
+Using `addExecutable` (0.13.0) as example;
+
+#+begin_src zig
+pub fn addExecutable(b: *Build, options: ExecutableOptions) *Step.Compile{
+//...
+}
+#+end_src
+
+We can then expand ExecutableOptions;
+
+#+begin_src zig
+pub const ExecutableOptions = struct {
+    name: []const u8,
+    /// If you want the executable to run on the same computer as the one
+    /// building the package, pass the `host` field of the package's `Build`
+    /// instance.
+    target: ResolvedTarget,
+    root_source_file: ?LazyPath = null,
+    version: ?std.SemanticVersion = null,
+    optimize: std.builtin.OptimizeMode = .Debug,
+    code_model: std.builtin.CodeModel = .default,
+    linkage: ?std.builtin.LinkMode = null,
+    max_rss: usize = 0,
+    link_libc: ?bool = null,
+    single_threaded: ?bool = null,
+    pic: ?bool = null,
+    strip: ?bool = null,
+    unwind_tables: ?bool = null,
+    omit_frame_pointer: ?bool = null,
+    sanitize_thread: ?bool = null,
+    error_tracing: ?bool = null,
+    use_llvm: ?bool = null,
+    use_lld: ?bool = null,
+    zig_lib_dir: ?LazyPath = null,
+    /// Embed a `.manifest` file in the compilation if the object format supports it.
+    /// https://learn.microsoft.com/en-us/windows/win32/sbscs/manifest-files-reference
+    /// Manifest files must have the extension `.manifest`.
+    /// Can be set regardless of target. The `.manifest` file will be ignored
+    /// if the target object format does not support embedded manifests.
+    win32_manifest: ?LazyPath = null,
+};
+#+end_src
+
+Okay so if we'd like a different build `target` we use `ResolvedTarget`, let's have a look;
+
+#+begin_src zig
+//..
+const Target = std.Target;
+//..
+/// A pair of target query and fully resolved target.
+/// This type is generally required by build system API that need to be given a
+/// target. The query is kept because the Zig toolchain needs to know which parts
+/// of the target are "native". This can apply to the CPU, the OS, or even the ABI.
+pub const ResolvedTarget = struct {
+    query: Target.Query,
+    result: Target,
+};
+#+end_src
+
+A "target query"  is needed to parse and return a Target. Reading `std.zig` we locate `Target.zig` but this file doesnt really tell us how the options are being parsed / queried.
+
+`Target/Query.zig`gives us the options available but not without the hassle of checking linked types, enums, structs etc 
+
+#+begin_src zig
+//! Contains all the same data as `Target`, additionally introducing the
+//! concept of "the native target". The purpose of this abstraction is to
+//! provide meaningful and unsurprising defaults. This struct does reference
+//! any resources and it is copyable.
+// ...
+// ...
+#+end_src
+
+This should be enough information to create a target query but then how are targets being resolved?
+
+Conveniently, the Build.zig has another function called `resolveTargetQuery(b: *Build, query: Target.Query)` that calls `std.zig.system.resolveTargetQuery` with the input query.
+
+#+begin_src zig
+/// Given a `Target.Query`, which specifies in detail which parts of the
+/// target should be detected natively, which should be standard or default,
+/// and which are provided explicitly, this function resolves the native
+/// components by detecting the native system, and then resolves
+/// standard/default parts relative to that.
+#+end_src
+
+
+I just want to quickly see the available build options?
+
+#+name: example
+#+begin_src zig
+  const target = .{
+      // CPU Arch
+      //        arm,
+      //        armeb,
+      //        aarch64,
+      //        aarch64_be,
+      //        aarch64_32,
+      //        arc,
+      //        avr,
+      //        bpfel,
+      //        bpfeb,
+      //        csky,
+      //        dxil,
+      //        hexagon,
+      //        loongarch32,
+      //        loongarch64,
+      //        m68k,
+      //        mips,
+      //        mipsel,
+      //        mips64,
+      //        mips64el,
+      //        msp430,
+      //        powerpc,
+      //        powerpcle,
+      //        powerpc64,
+      //        powerpc64le,
+      //        r600,
+      //        amdgcn,
+      //        riscv32,
+      //        riscv64,
+      //        sparc,
+      //        sparc64,
+      //        sparcel,
+      //        s390x,
+      //        tce,
+      //        tcele,
+      //        thumb,
+      //        thumbeb,
+      //        x86,
+      //        x86_64,
+      //        xcore,
+      //        xtensa,
+      //        nvptx,
+      //        nvptx64,
+      //        le32,
+      //        le64,
+      //        amdil,
+      //        amdil64,
+      //        hsail,
+      //        hsail64,
+      //        spir,
+      //        spir64,
+      //        spirv,
+      //        spirv32,
+      //        spirv64,
+      //        kalimba,
+      //        shave,
+      //        lanai,
+      //        wasm32,
+      //        wasm64,
+      //        renderscript32,
+      //        renderscript64,
+      //        ve,
+      //        spu_2,
+      .cpu_arch = .arm,
+      // Cpu model
+      // Always native
+      //  native,
+      // Always baseline
+      //  baseline,
+      // If CPU Architecture is native, then the CPU model will be native. Otherwise,
+      // it will be baseline.
+      //determined_by_cpu_arch,
+      // explicit: *const Target.Cpu.Model,
+      // name: []const u8,
+      // llvm_name: ?[:0]const u8,
+      // features: Feature.Set,
+      .cpu_model = .{ . explicit = &std.Target.arm.cpu.cortex_a72},
+      // and so on
+      // .cpu_features_add = ...
+      //.cpu_features_sub = ...
+      
+      // os tag
+      // freestanding,
+      // ananas,
+      // cloudabi,
+      // dragonfly,
+      // freebsd,
+      // fuchsia,
+      // ios,
+      // kfreebsd,
+      // linux,
+      // lv2,
+      // macos,
+      // netbsd,
+      // openbsd,
+      // solaris,
+      // uefi,
+      // windows,
+      // zos,
+      // haiku,
+      // minix,
+      // rtems,
+      // nacl,
+      // aix,
+      // cuda,
+      // nvcl,
+      // amdhsa,
+      // ps4,
+      // ps5,
+      // elfiamcu,
+      // tvos,
+      // watchos,
+      // driverkit,
+      // visionos,
+      // mesa3d,
+      // contiki,
+      // amdpal,
+      // hermit,
+      // hurd,
+      // wasi,
+      // emscripten,
+      // shadermodel,
+      // liteos,
+      // serenity,
+      // opencl,
+      // glsl450,
+      // vulkan,
+      // plan9,
+      // illumos,
+      // other,
+      .os_tag = .freestanding
+      // .os_version_min = ...
+      // .os_version_max = ...
+      // Semantic version..
+      // major: usize,
+      // minor: usize,
+      // patch: usize,
+      // pre: ?[]const u8 = null,
+      // build: ?[]const u8 = null,
+      // .glibc_version = ...
+      // abi
+      // none,
+      // gnu,
+      // gnuabin32,
+      // gnuabi64,
+      // gnueabi,
+      // gnueabihf,
+      // gnuf32,
+      // gnuf64,
+      // gnusf,
+      // gnux32,
+      // gnuilp32,
+      // code16,
+      // eabi,
+      // eabihf,
+      // android,
+      // musl,
+      // musleabi,
+      // musleabihf,
+      // muslx32,
+      // msvc,
+      // itanium,
+      // cygnus,
+      // coreclr,
+      // simulator,
+      // macabi,
+      // pixel,
+      // vertex,
+      // geometry,
+      // hull,
+      // domain,
+      // compute,
+      // library,
+      // raygeneration,
+      // intersection,
+      // anyhit,
+      // closesthit,
+      // miss,
+      // callable,
+      // mesh,
+      // amplification,
+      // ohos,
+      .abi = .eabihf
+      // Dynamic linker
+      //.dynamic_linker = ...
+      // Object format 
+      // coff,
+      // dxcontainer,
+      // elf,
+      // macho,
+      // spirv,
+      // wasm,
+      // c,
+      // hex,
+      // raw,
+      // plan9,
+      // nvptx,
+      //.ofmt = ... 
+  };
+  const optimize = b.standardOptimizeOption(.{});
+  const exe = b.addExecutable(.{ .name = "test", .root_source_file = b.path("src/main.zig"), .target = target, .optimize = optimize });
+#+end_src
+
+
+That's only for the target query, there are still many build options to set, one may generate the documentation from the official repo and probably get same information but I find it hard to retrieve this kind of information without spending much effort reading the source code. 
+
+Which in the end might've been the intention of the Zig creators.
+The Zig team is working hard on making Zig mature, and this is no critique of their work.
